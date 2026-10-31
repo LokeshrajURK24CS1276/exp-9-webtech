@@ -1,9 +1,7 @@
 // Ex.9 - 2. Employee Database (LensArt Studio Staff)
-// Database: EmployeeDB
 
-// Create the database, collection and insert five employees
+// Create EmployeeDB, a. display all employees, b. salary above Rs.40,000
 use EmployeeDB
-db.createCollection("employees")
 db.employees.insertMany([
   { empId: "E101", name: "Karthik", department: "Editing", salary: 42000, experience: 4 },
   { empId: "E102", name: "Anitha", department: "Photography", salary: 55000, experience: 7 },
@@ -11,22 +9,11 @@ db.employees.insertMany([
   { empId: "E104", name: "Sneha", department: "Retouching", salary: 47000, experience: 5 },
   { empId: "E105", name: "Vignesh", department: "Sales", salary: 32000, experience: 1 }
 ])
+db.employees.find({}, { _id: 0 })
+db.employees.find({ salary: { $gt: 40000 } }, { _id: 0, name: 1, salary: 1 })
 
-// a. Display all employees
-db.employees.find()
-
-// b. Find employees earning more than Rs.40,000
-db.employees.find({ salary: { $gt: 40000 } })
-
-// c. Update the salary of an employee
-db.employees.updateOne(
-  { empId: "E103" },
-  { $set: { salary: 41000 } }
-)
-db.employees.findOne({ empId: "E103" })
-
-// d. Display employees in descending order of salary
-db.employees.find().sort({ salary: -1 })
-
-// e. Count the employees in the Editing department
+// c. Update a salary, d. sort by salary (descending), e. count by department
+db.employees.updateOne({ empId: "E103" }, { $set: { salary: 41000 } })
+db.employees.findOne({ empId: "E103" }, { _id: 0, name: 1, salary: 1 })
+db.employees.find({}, { _id: 0, name: 1, salary: 1 }).sort({ salary: -1 })
 db.employees.countDocuments({ department: "Editing" })
